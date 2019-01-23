@@ -3,10 +3,11 @@ import cv2
 import numpy as np
 
 lines = []
-with open('./data1/driving_log.csv') as csvfile:
-    reader = csv.reader(csvfile)
-    for line in reader:
-        lines.append(line)
+for i in range(3):
+    with open('./data'+str(i+1)+'/driving_log.csv') as csvfile:
+        reader = csv.reader(csvfile)
+        for line in reader:
+            lines.append(line)
         
 images = []
 labels = []
@@ -18,7 +19,14 @@ for line in lines:
         i = 0
         source_path = line[i]
         filename = source_path.split('/')[-1]
-        img_path = './data1/IMG/'+filename
+        foldername = source_path.split('/')[-2]
+        parentfoldername = source_path.split('/')[-3]
+        prefix = './data1/IMG/'
+        if parentfoldername == 'data2':
+            prefix = './data2/IMG/'
+        if parentfoldername == 'data3':    
+            prefix = './data3/IMG/'
+        img_path = prefix+filename
         image = cv2.imread(img_path)
         images.append(image)
         flipped_image = cv2.flip(image, 1)
@@ -66,6 +74,6 @@ model.add(Dense(1))
 model.summary()
 
 model.compile(loss='mse', optimizer='adam')
-model.fit(X_train, y_train, validation_split=0.2, shuffle=True, epochs=1)
+model.fit(X_train, y_train, validation_split=0.2, shuffle=True, epochs=5)
 
 model.save('model.h5')
