@@ -2,3 +2,4 @@ model.h5
 *.h5
 left_*.jpg
 right_*.jpg
+/run*/

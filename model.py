@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.image as mpimg
 
 lines = []
-for i in range(8):
+for i in range(12):
     with open('./data'+str(i+1)+'/driving_log.csv') as csvfile:
         reader = csv.reader(csvfile)
         for line in reader:
@@ -80,4 +80,4 @@ model.summary()
 model.compile(loss='mse', optimizer='adam')
 model.fit(X_train, y_train, validation_split=0.2, shuffle=True, epochs=5)
 
-model.save('model.h5')
+model.save('model-2.h5')
