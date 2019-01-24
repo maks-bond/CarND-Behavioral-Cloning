@@ -1,9 +1,10 @@
 import csv
 import cv2
 import numpy as np
+import matplotlib.image as mpimg
 
 lines = []
-for i in range(3):
+for i in range(8):
     with open('./data'+str(i+1)+'/driving_log.csv') as csvfile:
         reader = csv.reader(csvfile)
         for line in reader:
@@ -19,15 +20,15 @@ for line in lines:
         i = 0
         source_path = line[i]
         filename = source_path.split('/')[-1]
-        foldername = source_path.split('/')[-2]
         parentfoldername = source_path.split('/')[-3]
         prefix = './data1/IMG/'
-        if parentfoldername == 'data2':
-            prefix = './data2/IMG/'
-        if parentfoldername == 'data3':    
-            prefix = './data3/IMG/'
+        
+        if 'data' in parentfoldername:
+            prefix = './'+parentfoldername+'/IMG/'
+            
         img_path = prefix+filename
-        image = cv2.imread(img_path)
+        #image = cv2.imread(img_path)
+        image = mpimg.imread(img_path)
         images.append(image)
         flipped_image = cv2.flip(image, 1)
         images.append(flipped_image)
@@ -77,6 +78,6 @@ model.add(Dense(1))
 model.summary()
 
 model.compile(loss='mse', optimizer='adam')
-model.fit(X_train, y_train, validation_split=0.2, shuffle=True, epochs=10)
+model.fit(X_train, y_train, validation_split=0.2, shuffle=True, epochs=5)
 
-model.save('model-2.h5')
+model.save('model.h5')
