@@ -5,7 +5,7 @@ import matplotlib.image as mpimg
 import sklearn
 
 lines = []
-for i in range(12):
+for i in range(13):
     with open('./data'+str(i+1)+'/driving_log.csv') as csvfile:
         reader = csv.reader(csvfile)
         for line in reader:
@@ -121,7 +121,7 @@ model.add(Dense(1))
 model.summary()
 
 model.compile(loss='mse', optimizer='adam')
-model.fit(X_train, y_train, validation_split=0.2, shuffle=True, epochs=5)
+model.fit(X_train, y_train, validation_split=0.2, shuffle=True, epochs=10)
 
 #model.fit_generator(train_generator, samples_per_epoch=len(train_samples), validation_data=validation_generator, nb_val_samples=len(validation_samples), nb_epoch=5)
 
