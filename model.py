@@ -2,6 +2,7 @@ import csv
 import cv2
 import numpy as np
 import matplotlib.image as mpimg
+import sklearn
 
 lines = []
 for i in range(12):
@@ -9,7 +10,49 @@ for i in range(12):
         reader = csv.reader(csvfile)
         for line in reader:
             lines.append(line)
-        
+
+            
+np.random.shuffle(lines)
+# from sklearn.model_selection import train_test_split
+# train_samples, validation_samples = train_test_split(lines, test_size=0.2)
+
+# def generator(samples, batch_size=32):
+#     num_samples = len(samples)
+#     while 1: # Loop forever so the generator never terminates
+#         np.random.shuffle(samples)
+#         for offset in range(0, num_samples, batch_size):
+#             batch_samples = samples[offset:offset+batch_size]
+
+#             images = []
+#             labels = []
+#             for batch_sample in batch_samples:
+#                 source_path = batch_sample[0]
+#                 filename = source_path.split('/')[-1]
+#                 parentfoldername = source_path.split('/')[-3]
+#                 prefix = './data1/IMG/'
+
+#                 if 'data' in parentfoldername:
+#                     prefix = './'+parentfoldername+'/IMG/'
+
+#                 img_path = prefix+filename
+#                 image = mpimg.imread(img_path)
+#                 label = float(batch_sample[3])
+#                 images.append(image)
+#                 flipped_image = cv2.flip(image, 1)
+#                 images.append(flipped_image)
+
+#                 labels.append(label)
+#                 labels.append(-1.0*label)
+
+#             # trim image to only see section with road
+#             X_train = np.array(images)
+#             y_train = np.array(labels)
+#             yield sklearn.utils.shuffle(X_train, y_train)
+
+# # compile and train the model using the generator function
+# train_generator = generator(train_samples, batch_size=32)
+# validation_generator = generator(validation_samples, batch_size=32)
+
 images = []
 labels = []
 im_shape = None
@@ -79,5 +122,7 @@ model.summary()
 
 model.compile(loss='mse', optimizer='adam')
 model.fit(X_train, y_train, validation_split=0.2, shuffle=True, epochs=5)
+
+#model.fit_generator(train_generator, samples_per_epoch=len(train_samples), validation_data=validation_generator, nb_val_samples=len(validation_samples), nb_epoch=5)
 
 model.save('model-2.h5')
